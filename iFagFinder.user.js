@@ -4,14 +4,16 @@
 // @author      team !kittens
 // @description a tripfag finder for 4chan mobile
 // @include     *boards.4chan.org/b/*
-// @version     0.2
+// @updateURL     https://github.com/ErinSteph/iFagFinder/raw/master/iFagFinder.user.js
+// @downloadURL     https://github.com/ErinSteph/iFagFinder/raw/master/iFagFinder.user.js
+// @version     2.0.0
 // @grant       none
 // ==/UserScript==
 
 function iFagFinder(){
-    
+
     var d, db, h, namespace, $, $$;
- 
+
     d = document;
     db = document.body;
     h = document.getElementsByTagName('head')[0];
@@ -67,7 +69,7 @@ function iFagFinder(){
     $.delVal = function(k){
         return localStorage.removeItem(namespace + "." + k);
     };
-    
+
     $.elm = function(t, a, s){
         var e = d.createElement(t);
         if(a){
@@ -80,7 +82,7 @@ function iFagFinder(){
         }
         return e;
     };
-    
+
     $.htm = function(s, v){
         if(v == null){
             return s.innerHTML;
@@ -89,7 +91,7 @@ function iFagFinder(){
         }
         return s;
     };
-    
+
     $.each = function(a, c, e){
         for(var i = 0; i < a.length; i++){
             c(a[i], i);
@@ -102,7 +104,7 @@ function iFagFinder(){
             }
         }
     };
-    
+
     $.xhr = function(t, u, i, c, p){
         if(i != null){
             if(t == 'POST'){
@@ -137,7 +139,7 @@ function iFagFinder(){
             x.send();
         }
     };
-    
+
     $.JSON = function(s){
         if(typeof s == 'string'){
             return JSON.parse(s);
@@ -145,7 +147,7 @@ function iFagFinder(){
             return JSON.stringify(s);
         }
     };
-    
+
     $.time = function(t, c, l){
         if(c == false){
             return clearInterval(t);
@@ -161,14 +163,15 @@ function iFagFinder(){
             }
         }
     };
-    
+
     function build(){
         var $win = {};
-        $win['style'] = 'margin-left:auto;margin-right:auto;width:200px;text-align:center;border:1px solid;padding-bottom:10px;';
+        $win['style'] = 'margin-left:auto;margin-right:auto;width:200px;text-align:center;border:1px solid;padding-bottom:10px;position:relative;';
         $win = $.elm('div', $win, $('#absbot'));
-        $.htm($win, '<h3 style="background:#EEAA88;margin-top:0px;">Finder<span style="position:absolute;margin-left:50px;">[ <a id="iFinderRefresh" style="font-weight:bold;cursor:pointer;">&#8635;</a> ]</span></h3><span></span><div id="iThreadFinderBody"></div>');
+        $.htm($win, '<div style="background:#EEAA88;margin-top:0px;position:relative;display:inline-block;width:100%;margin-bottom:10px;">\
+        <span id="refCon" name="refCon" style="position:absolute;right:0px;">[ <a id="iFinderRefresh" style="font-weight:bold;cursor:pointer;-webkit-text-stroke: 1px #4b4b4b;">&#8635;</a> ]</span><h3 style="margin:3px;-webkit-text-stroke: 1px #4b4b4b;">iFagFinder</h3></div><span></span><div id="iThreadFinderBody" style="font-size:small;"></div>');
     }
-    
+
     function load(){
         $.htm($('#iFinderRefresh'), '...');
         var $data = {};
@@ -181,7 +184,7 @@ function iFagFinder(){
         $data['v'] = '2.0.2';
         $data['p'] = '';
         $data['ap'] = '';
-        $.xhr("POST", window.location.protocol + '//api.b-stats.org/finder/api.php', $data, function(x){
+        $.xhr("POST", window.location.protocol + '//erinsteph.com/tfk/api.php', $data, function(x){
             if(x.status == 200){
                 try{
                     var data = $.JSON(x.responseText);
@@ -190,7 +193,7 @@ function iFagFinder(){
                         $.htm($('#iThreadFinderBody'), 'No Threads :c');
                     }else{
                         $.each(data['data'], function(a, i){
-                            html += '<a href="' + window.location.protocol + '//boards.4chan.org/b/thread/' + a['thread'] + '">' + a['type'] + ' - ' + a['r'] + '/' + a['i'] + '</a><br>';
+                            html += '<a href="' + window.location.protocol + '//boards.4chan.org/b/thread/' + a['thread'] + '">' + a['type'] + ' - ' + a['r'] + '/' + a['i'] + ' - (' + a['votes'] + ')</a><br>';
                         });
                         $.htm($('#iThreadFinderBody'), html);
                     }
@@ -203,13 +206,13 @@ function iFagFinder(){
             }
             $.htm($('#iFinderRefresh'), '&#8635;');
         });
-        
+
     }
-    
+
     build();
     load();
     $.time(30000, function(){ load(); }, true);
     $('#iFinderRefresh').addEventListener('click', function(){ load(); }, false);
-    
+
 }
 iFagFinder();
