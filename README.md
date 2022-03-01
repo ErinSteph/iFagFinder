@@ -1,7 +1,7 @@
 # iFagFinder~
 
 
-a Tripfag Finder for 4chan mobile.
+a read-only version Tripfag Finder for the 4chan mobile layout to make finding your friends easier.
 
 It does not require 4chan X.
 
